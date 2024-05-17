@@ -1,0 +1,112 @@
+.container-fluid {
+    margin-top: 3%;
+    width: 90%;
+}
+
+h1{
+    font-size: 2.5em;
+    margin-bottom: 3%;
+}
+
+.customInput {
+    border: none;
+    border-bottom: 1.5px solid #464646;
+    border-radius: 0;
+}
+
+.customSelect {
+    border: none;
+    border-bottom: 1.5px solid #464646;
+    border-radius: 0;
+    /* Icono de flecha (SVG codificado en base64) */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 15.5l6-6-1.5-1.5L10 12 5.5 7.5 4 9z" fill="%23333"/></svg>');
+    background-repeat: no-repeat; /*Para que el background-image no se repita*/
+    background-position: right 10px top 50%; /*Posición de la flecha background-image*/
+    background-size: 20px;
+}
+
+.buttons {
+    text-align: right;
+    button{
+        margin-right: 2%;
+        background-color: #5356FF;
+    }
+}
+
+.btnForm {
+    width: 80%;
+    height: 50px;
+    background-color: transparent;
+    border: 1px solid black;
+    color: #464646;
+}
+
+.btnForm:hover {
+    transform: scale(1.2);
+}
+
+.btnJuego {
+    margin-bottom: 1.7%;
+    border: none;
+    background: none;
+}
+
+.btnJuego:hover {
+    transform: scale(1.1);
+}
+
+.card-content {
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    padding: 20px;
+    text-align: left; 
+}
+
+.contenedorImg{
+    width: 60%;
+}
+
+img{
+    width: 100%;
+    height: 90%;
+}
+
+.infoJuego{
+    width: 100%;
+    margin-left: 7%;
+}
+
+.btnNuevoJuego{
+    width: 15%;
+    height: 45px;
+    margin-bottom: 3%;
+    color: white;
+}
+
+.btnNuevoJuego:hover{
+    transform: scale(1.1);  
+}
+
+.popup-container {
+    width: 500px;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content{
+    text-align: center;
+}
+
+.errorMsg{
+    color:red;
+    margin-top: 3%;
+}

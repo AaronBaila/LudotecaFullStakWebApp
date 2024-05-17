@@ -1,0 +1,78 @@
+.container-fluid {
+    margin-top: 3%;
+    width: 90%;
+}
+
+h1{
+    font-size: 2.5em;
+    margin-bottom: 3%;
+}
+
+table.table th {
+  font-size: 1.1em;
+  background-color: #f5f5f5;
+  color: #838383;
+  vertical-align: middle;
+  height: 50px;
+  text-align: center;
+}
+
+table.table td {
+  text-align: center;
+  vertical-align: middle;
+  font-size: 1.2em;
+}
+
+.buttons {
+  text-align: right; 
+  button{
+      margin-right: 2%;
+      background-color: #5356FF;
+  }
+}
+
+.btnMatIcon{
+  background-color: transparent;
+  border: none;
+}
+
+.btnMatIcon:hover{
+  transform: scale(1.6);
+}
+
+mat-icon{
+  font-size: 1.5em;
+  margin-bottom: 3%;
+}
+
+.popup-container {
+  width: 500px;
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fefefe;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+  
+.popup-content {
+  text-align: center;
+}
+
+.btnNuevoAutor{
+  width: 10%;
+  height: 45px;
+  color: white;
+}
+
+.btnNuevoAutor:hover{
+    transform: scale(1.1);  
+}
+
+.errorMsg{
+  color:red;
+  margin-top: 3%;
+}

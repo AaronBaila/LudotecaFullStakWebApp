@@ -1,0 +1,170 @@
+<div class="container-fluid">
+
+    <h1>Catálogo de juegos</h1>
+
+    <!--  FORMULARIO PARA FILTRAR -->
+    <div class="row">
+        <div class="col-md-6">
+            <input type="text" class="form-control customInput" placeholder="Título del juego" #tituloBusqueda >  
+        </div>
+
+        <div class="col-md-3" style="padding-right: 3%;">
+            <select class="form-control customSelect" id="inputSelect" #categoriaBusqueda>
+                <option selected value="Selecciona categoria">Categoría del juego</option>
+                <option *ngFor="let categoria of arrayCategorias" [value]="categoria.id">{{categoria.nombre}}</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <div class="d-flex">
+                <button class="btn btnForm" type="button" style="margin-right: 8%;" (click)="recargarPagina()"><strong>Limpiar</strong></button>
+                <button class="btn btnForm" type="button" style="margin-left: 15px;" (click)="filtrarJuegos(tituloBusqueda, categoriaBusqueda)"><strong>Filtrar</strong></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR QUE MUESTRA LOS JUEGOS -->
+    <div class="container" style="margin-top: 3%;">
+        <div class="row">
+            <button class="button btnJuego col-md-4" *ngFor="let juego of arrayJuegos" (click)="mostrarFormEdicion(juego.id, juego.titulo, juego.edad, juego.categoria_id, juego.autor_id)">
+                <div class="card-content">
+                    <div class="contenedorImg">
+                        <img src="../../../assets/foto.png" alt="Imagen del juego">
+                    </div>
+                    <div class="infoJuego">
+                        <p style="font-size: 1.3em;"><strong>{{juego.titulo}}</strong></p>
+                        <p>Edad recomendada: {{juego.edad}}</p>
+                        <p>Categoría: {{juego.categoria_id}}</p>
+                        <p>Autor: {{juego.autor_id}}</p>
+                        <p>Nacionalidad: {{juego.nacionalidad}}</p>
+                    </div>
+                </div>
+            </button>
+        </div>
+
+        <div class="buttons">
+            <button class="btn btnNuevoJuego" type="button" (click)="mostrarForm()">
+                <i class="bi bi-plus"></i> <strong>Nuevo juego</strong>
+            </button>
+        </div>
+    </div>
+
+    <!-- POPUP TRAS SOLICITUD AL SERVIDOR -->
+    <div class="popup-container" id="popup" [ngStyle]="{'display':varPopupResultado ? 'block' : 'none' }">
+        <div class="popup-content">
+            <div class="container">
+                <h1 style="font-size: 1.3em;">{{varResultado}}</h1>
+
+                <div class="buttons">
+                    <button type="button" class="btn btn-primary" (click)="recargarPagina()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP AVISO PERMISOS -->
+    <div class="popup-container" id="popup" [ngStyle]="{'display':varErrorPermisos ? 'block' : 'none' }">
+        <div class="popup-content">
+            <div class="container">
+                <h1 style="font-size: 1.3em;">NO TIENES PERMISOS SUFICIENTES</h1>
+
+                <div class="buttons">
+                    <button type="button" class="btn btn-primary" (click)="cerrarErrorPermisos()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP FORMULARIO PARA CREAR NUEVO JUEGO-->
+    <div class="popup-container" id="popup" [ngStyle]="{'display':varMostrarForm ? 'block' : 'none' }">
+        <div class="popup-content">
+            <div class="container">
+                <form *ngIf="!itsEdit; else esEdit"> <!-- NGIF PARA MOSTRAR FORMULARIO DE EDICION O FORMULARIO NORMAL -->
+                    <h1 style="font-size: 2em;"><strong>Crear juego</strong></h1>
+                    <div class="mb-3">
+                        <label for="id" class="form-label">Identificador</label>
+                        <input type="text" class="form-control" id="id" placeholder="{{idnum}}" name="id" disabled>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="titulo" placeholder="Título" name="titulo" #titulo required>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="edad" placeholder="Edad" name="edad" #edad required>
+                    </div>
+
+                    <div class="mb-3">
+                        <select class="form-control" id="inputSelect" #categoria>
+                            <option selected value="">Selecciona categoría</option>
+                            <option *ngFor="let categoria of arrayCategorias" [value]="categoria.id">{{categoria.nombre}}</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <select class="form-control" id="inputSelect" #autor>
+                            <option selected value="">Selecciona autor</option>
+                            <option *ngFor="let autor of arrayAutores" [value]="autor.id">{{autor.nombre}}</option>
+                        </select>
+                    </div>
+            
+                    <div class="buttons">
+                        <button type="button" class="btn btn-primary" (click)="cerrarForm()">Cerrar</button>
+                        <button type="button" class="btn btn-primary" (click)="postJuego(titulo, edad, categoria, autor)">Guardar</button>
+                    </div>
+
+                    <div class="errorMsg">
+                        <p *ngIf="errorTitulo">El título no puede estar vacío</p>
+                        <p *ngIf="errorEdad">El campo edad no puede estar vacío o tiene que ser un número</p>
+                        <p *ngIf="errorCategoria">Tienes que seleccionar una categoría</p>
+                        <p *ngIf="errorAutor">Tienes que seleccionar un autor</p>
+                    </div>
+                </form>
+                
+                <!-- FORMULARIO EDICIÓN -->
+                <ng-template #esEdit>
+                    <form>
+                        <h1 style="font-size: 1.8em;">Modificar juego</h1>
+                        <div class="mb-3">
+                            <label for="id" class="form-label">Identificador</label>
+                            <input type="text" class="form-control" id="id" value="{{varAuxiliarEditId}}" name="id" disabled #id>
+                        </div>
+    
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="titulo" value="{{varAuxiliarEditTitulo}}" name="titulo" #titulo>
+                        </div>
+    
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="edad" value="{{varAuxiliarEditEdad}}" name="edad" #edad>
+                        </div>
+    
+                        <div class="mb-3">
+                            <select class="form-control" id="inputSelect" #categoria>
+                                <option selected value="">{{varAuxiliarEditCategoria}}</option>
+                                <option *ngFor="let categoria of arrayCategorias" [value]="categoria.id">{{categoria.nombre}}</option>
+                            </select>
+                        </div>
+    
+                        <div class="mb-3">
+                            <select class="form-control" id="inputSelect" #autor>
+                                <option selected value="">{{varAuxiliarEditAutor}}</option>
+                                <option *ngFor="let autor of arrayAutores" [value]="autor.id">{{autor.nombre}}</option>
+                            </select>
+                        </div>
+                
+                        <div class="buttons">
+                            <button type="button" class="btn btn-primary" (click)="cerrarFormEdicion()">Cerrar</button>
+                            <button type="button" class="btn btn-primary" (click)="eliminarJuego()">Eliminar</button>
+                            <button type="button" class="btn btn-primary" (click)="editarJuego(id, titulo, edad, categoria, autor)">Editar</button>
+                        </div>
+
+                        <div class="errorMsg">
+                            <p *ngIf="errorTitulo">El título no puede estar vacío</p>
+                            <p *ngIf="errorEdad">El campo edad no puede estar vacío o tiene que ser un número</p>
+                        </div>
+                    </form>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

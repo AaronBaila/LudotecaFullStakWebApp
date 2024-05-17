@@ -1,0 +1,120 @@
+<div class="container-fluid">
+    <h1>Listado de Categorías</h1>
+
+    <!-- TABLA CATEGORÍAS -->
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>IDENTIFICADOR</th>
+                    <th>NOMBRE CATEGORÍA</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let categoria of arrayCategorias;">
+                    <td>{{categoria.id}}</td>
+                    <td>{{categoria.nombre}}</td>
+                    <td>
+                        <button type="button" class="btn btnMatIcon" style="color: #3875f5;" (click)="mostrarFormEdicion(categoria.id, categoria.nombre)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                       
+                    </td>
+                    <td>
+                        <button type="button" class="btn btnMatIcon" style="color: red;" (click)="eliminarCategoria(categoria.id)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+     <!-- POPUP TRAS SOLICITUD AL SERVIDOR -->
+     <div class="popup-container" id="popup" [ngStyle]="{'display':varPopupResultado ? 'block' : 'none' }">
+        <div class="popup-content">
+            <div class="container">
+                <h1 style="font-size: 1.3em;">{{varResultado}}</h1>
+
+                <div class="buttons">
+                    <button type="button" class="btn btn-primary" (click)="recargarPagina()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP AVISO PERMISOS -->
+    <div class="popup-container" id="popup" [ngStyle]="{'display':varErrorPermisos ? 'block' : 'none' }">
+        <div class="popup-content">
+            <div class="container">
+                <h1 style="font-size: 1.3em;">NO TIENES PERMISOS SUFICIENTES</h1>
+
+                <div class="buttons">
+                    <button type="button" class="btn btn-primary" (click)="cerrarErrorPermisos()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP FORMULARIO PARA CREAR NUEVA CATEGORIA -->
+    <div class="popup-container" id="popup" [ngStyle]="{'display':varMostrarForm ? 'block' : 'none' }">
+        <div class="popup-content">
+            <div class="container">
+    
+                <form *ngIf="!itsEdit; else esEdit"> <!-- NGIF PARA MOSTRAR FORMULARIO DE EDICIÓN O FORMULARIO NORMAL -->
+                    <h1 style="font-size: 2em;"><strong>Crear categoría</strong></h1>
+                    <div class="mb-3">
+                        <label for="id" class="form-label">Identificador</label>
+                        <input type="text" class="form-control" id="id" placeholder="{{idnum}}" name="id" disabled>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="nombre" placeholder="Nombre" name="nombre" #nombre required>
+                    </div>
+            
+                    <div class="buttons">
+                        <button type="button" class="btn btn-primary" (click)="cerrarForm()">Cerrar</button>
+                        <button type="button" class="btn btn-primary" (click)="postCategoria(nombre)">Guardar</button>
+                    </div>
+
+                    <div class="errorMsg">
+                        <p *ngIf="errorNombre">El nombre no puede estar vacío</p>
+                    </div>
+                </form>
+
+                <!-- FORMULARIO EDICIÓN -->
+                <ng-template #esEdit>
+                    <form>
+                        <h1 style="font-size: 1.9em;">Modificar categoría</h1>
+                        <div class="mb-3">
+                            <label for="id" class="form-label">Identificador</label>
+                            <input type="text" class="form-control" id="id" placeholder="{{varAuxiliarEditId}}" name="id" disabled>
+                        </div>
+    
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="nombre" value="{{varAuxiliarEditNombre}}" name="nombre" #nombre required>
+                        </div>
+                
+                        <div class="buttons">
+                            <button type="button" class="btn btn-primary" (click)="cerrarFormEdicion()">Cerrar</button>
+                            <button type="button" class="btn btn-primary" (click)="editarCategoria(varAuxiliarEditId, nombre)">Editar</button>
+                        </div>
+
+                        <div class="errorMsg">
+                            <p *ngIf="errorNombre">El nombre no puede estar vacío</p>
+                        </div>
+                    </form>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button class="btn btnNuevaCategoria" type="button" (click)="mostrarForm()">
+            <i class="bi bi-plus"></i> <strong>Nueva categoría</strong>
+        </button>
+    </div>
+</div>
