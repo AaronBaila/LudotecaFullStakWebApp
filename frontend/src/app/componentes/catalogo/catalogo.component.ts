@@ -177,7 +177,7 @@ export class CatalogoComponent {
     window.location.reload()
   }
 
-  //Funcion para guardar juego
+  //Función para guardar juego
   postJuego(titulo:HTMLInputElement, edad:HTMLInputElement, categoria_id:HTMLSelectElement, autor_id:HTMLSelectElement){
     //Validación campos
     if(titulo.value == ""){

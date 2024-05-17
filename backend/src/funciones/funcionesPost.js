@@ -59,7 +59,7 @@ export function postJuego(req, res){
     let titulo = req.body.titulo
     let edad = req.body.edad
     let categoria_id = req.body.categoria_id
-    let autor_id = req.body.categoria_id
+    let autor_id = req.body.autor_id
     
     let juego = new Juego({
         id:id,
